@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import "./App.css";
+import { continents } from "./continents";
+import { Link } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => (
+  <ComposableMap projection={"geoMercator"}>
+    <Geographies geography={continents}>
+      {({ geographies }) =>
+        geographies.map((geo) => {
+          console.log(geo);
+          return (
+            <Link to={`/region/${geo.properties.continent}`}>
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                style={{
+                  default: {
+                    fill: "#06F",
+                    stroke: "#FFF",
+                    strokeWidth: 2,
+                  },
+                  hover: {
+                    fill: "#F00",
+                  },
+                }}
+              />
+            </Link>
+          );
+        })
+      }
+    </Geographies>
+  </ComposableMap>
+);
 
 export default App;
